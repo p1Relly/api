@@ -14,7 +14,6 @@ import (
 	"golang.org/x/exp/slog"
 
 	"url-shortener/internal/config"
-	"url-shortener/internal/http-server/handlers/redirect"
 	mwLogger "url-shortener/internal/http-server/middleware/logger"
 	"url-shortener/internal/lib/logger/handlers/slogpretty"
 	"url-shortener/internal/lib/logger/sl"
@@ -102,7 +101,7 @@ func main() {
 	// 	// TODO: add DELETE /url/{id}
 	// })
 
-	router.Get("/{alias}", redirect.New(log, storage))
+	// router.Get("/{alias}", redirect.New(log, storage))//
 
 	log.Info("starting server", slog.String("address", cfg.Address))
 
