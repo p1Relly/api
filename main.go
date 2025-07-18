@@ -24,35 +24,6 @@ type Sun struct {
 	Sunset  int `json:"sunset"`
 }
 
-// func testHandler(w http.ResponseWriter, r *http.Request) {
-// 	// Убедимся, что это GET-запрос
-// 	if r.Method != http.MethodGet {
-// 		http.Error(w, "Only GET method is allowed", http.StatusMethodNotAllowed)
-// 		return
-// 	}
-
-// 	// Попробуем прочитать тело запроса
-// 	defer r.Body.Close()
-// 	var weather Weather
-// 	err := json.NewDecoder(r.Body).Decode(&weather)
-// 	if err != nil {
-// 		http.Error(w, "Invalid JSON body: "+err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	// Пример обработки данных (можешь делать что угодно здесь)
-// 	log.Printf("Received Weather: %+v\n", weather)
-
-// 	// Вернем принятые данные обратно как JSON
-// 	w.Header().Set("Content-Type", "application/json")
-// 	jsonData, err := json.Marshal(weather)
-// 	if err != nil {
-// 		http.Error(w, "Error encoding response: "+err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	w.Write(jsonData)
-// }
-
 func testHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		var request Weather
