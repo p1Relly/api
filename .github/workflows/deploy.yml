@@ -30,5 +30,5 @@ jobs:
 
       - name: Deploy to server
         run: |
-          scp server user@your.server.com:/home/user/my-api-server/server
-          ssh user@your.server.com 'pkill server || true && nohup /home/user/my-api-server/server > server.log 2>&1 &'
+          scp server user@your.server.com:/home/user/API/server
+          ssh user@your.server.com 'pkill server || true && nohup /home/user/API/server > server.log 2>&1 &'
