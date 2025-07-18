@@ -1,7 +1,8 @@
-name: Deploy API Server
+name: Deploy App
 
 on:
-  push:
+  workflow_dispatch:
+    push:
     branches:
       - main
 
