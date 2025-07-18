@@ -12,15 +12,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v2
         with:
-          go-version: 1.21
+          go-version: 1.24.2
 
       - name: Build binary
-        run: go build -o server .
+        run: |
+          go mod download
+          go build -o url-shortener ./
 
       - name: Setup SSH
         run: |
@@ -31,5 +33,5 @@ jobs:
 
       - name: Deploy to server
         run: |
-          scp server user@your.server.com:/home/user/API/server
-          ssh user@your.server.com 'pkill server || true && nohup /home/user/API/server > server.log 2>&1 &'
+          scp server root@5.189.237.243:/root/apps/url-shortener
+          ssh root@5.189.237.243 'pkill server || true && nohup /root/apps/url-shortener/server > server.log 2>&1 &'
