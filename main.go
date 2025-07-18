@@ -24,6 +24,9 @@ type Sun struct {
 }
 
 func testHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// Тут может быть логика обработки GET-запроса
+	}
 	weather := Weather{
 		Temp: 36.6,
 		Wind: Wind{

@@ -30,9 +30,9 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh root@5.189.237.243 'mkdir -p /root/apps/url-shortener'
-          scp server root@5.189.237.243:/root/apps/url-shortener/server
+          ssh root@5.189.237.243 'mkdir -p /root/api'
+          scp server root@5.189.237.243:/root/api/server
           ssh root@5.189.237.243 '
             pkill server || true
-            nohup /root/apps/url-shortener/server > /root/apps/url-shortener/server.log 2>&1 &
+            nohup /root/api/server > /root/api/server.log 2>&1 &
           '
