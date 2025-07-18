@@ -33,7 +33,7 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		request.Temp += 10.0
+		request.Temp += 10.0 // TODO
 
 		w.Header().Set("Content-Type", "application/json")
 		jsonData, err := json.Marshal(request)
