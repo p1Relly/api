@@ -103,7 +103,13 @@ func main() {
 
 	// router.Get("/{alias}", redirect.New(log, storage)) //
 
+	//////////////
+
 	http.HandleFunc("/test", testHandler)
+
+	http.ListenAndServe("5.189.237.243", nil)
+	_ = storage
+	////////////////
 
 	log.Info("starting server", slog.String("address", cfg.Address))
 
@@ -118,11 +124,11 @@ func main() {
 		IdleTimeout:  cfg.HTTPServer.IdleTimeout,
 	}
 
-	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-			log.Error("failed to start server")
-		}
-	}()
+	// go func() {
+	// 	if err := srv.ListenAndServe(); err != nil {
+	// 		log.Error("failed to start server")
+	// 	}
+	// }()
 
 	log.Info("server started")
 
