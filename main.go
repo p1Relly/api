@@ -49,6 +49,14 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		weather := Weather{
 			Temp: 12.0,
+			Wind: Wind{
+				Speed: 5.0,
+				Gust:  10.0,
+			},
+			Sun: Sun{
+				Sunrise: 1626076800,
+				Sunset:  1626127200,
+			},
 		}
 
 		w.Header().Set("Content-Type", "application/json")
