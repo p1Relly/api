@@ -25,31 +25,41 @@ type Sun struct {
 
 func testHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		// Тут может быть логика обработки GET-запроса
-	}
-	weather := Weather{
-		Temp: 36.6,
-		Wind: Wind{
-			Speed: 5.0,
-			Gust:  10.0,
-		},
-		Sun: Sun{
-			Sunrise: 1626076800,
-			Sunset:  1626127200,
-		},
+		weather := Weather{
+			Temp: 36.6,
+			Wind: Wind{
+				Speed: 5.0,
+				Gust:  10.0,
+			},
+			Sun: Sun{
+				Sunrise: 1626076800,
+				Sunset:  1626127200,
+			},
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		jsonData, err := json.Marshal(weather)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(jsonData)
 	}
 
 	if r.Method == http.MethodGet {
-		// Тут может быть логика обработки GET-запроса
+		weather := Weather{
+			Temp: 12.0,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		jsonData, err := json.Marshal(weather)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(jsonData)
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	jsonData, err := json.Marshal(weather)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.Write(jsonData)
 }
 
 func main() {
