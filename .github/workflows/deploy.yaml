@@ -13,6 +13,8 @@ jobs:
     env:
       HOST: root@5.189.237.243
       DEPLOY_DIRECTORY: /root/apps/url-shortener
+      CONFIG_PATH: /root/apps/url-shortener/config/prod.yaml
+      ENV_FILE_PATH: /root/apps/url-shortener/config.env
 
     steps:
       - name: Checkout repository
