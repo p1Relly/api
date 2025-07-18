@@ -1,8 +1,7 @@
-name: Deploy App
+name: Deploy API Server
 
 on:
-  workflow_dispatch:
-    push:
+  push:
     branches:
       - main
 
@@ -12,26 +11,28 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.24.2
+          go-version: 1.21
 
       - name: Build binary
-        run: |
-          go mod download
-          go build -o url-shortener ./
+        run: go build -o server .
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
+          ssh-keyscan -H 5.189.237.243 >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         run: |
-          scp server root@5.189.237.243:/root/apps/url-shortener
-          ssh root@5.189.237.243 'pkill server || true && nohup /root/apps/url-shortener/server > server.log 2>&1 &'
+          ssh root@5.189.237.243 'mkdir -p /root/apps/url-shortener'
+          scp server root@5.189.237.243:/root/apps/url-shortener/server
+          ssh root@5.189.237.243 '
+            pkill server || true
+            nohup /root/apps/url-shortener/server > /root/apps/url-shortener/server.log 2>&1 &
+          '
