@@ -5,6 +5,23 @@ import (
 	"net/http"
 )
 
+type Weather struct {
+	Temp          float64 `json:"temp"`
+	FeelsLikeTemp float64 `json:"feels_like"`
+	Wind          Wind
+	Sun           Sun
+}
+
+type Wind struct {
+	Speed float64 `json:"speed"`
+	Gust  float64 `json:"gust"`
+}
+
+type Sun struct {
+	Sunrise int `json:"sunrise"`
+	Sunset  int `json:"sunset"`
+}
+
 func testHandler(w http.ResponseWriter, r *http.Request) {
 	weather := Weather{
 		Temp: 36.6,
@@ -26,23 +43,6 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the response writer
 	w.Write(jsonData)
-}
-
-type Weather struct {
-	Temp          float64 `json:"temp"`
-	FeelsLikeTemp float64 `json:"feels_like"`
-	Wind          Wind
-	Sun           Sun
-}
-
-type Wind struct {
-	Speed float64 `json:"speed"`
-	Gust  float64 `json:"gust"`
-}
-
-type Sun struct {
-	Sunrise int `json:"sunrise"`
-	Sunset  int `json:"sunset"`
 }
 
 func main() {
