@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -23,30 +24,56 @@ type Sun struct {
 	Sunset  int `json:"sunset"`
 }
 
+// func testHandler(w http.ResponseWriter, r *http.Request) {
+// 	// Убедимся, что это GET-запрос
+// 	if r.Method != http.MethodGet {
+// 		http.Error(w, "Only GET method is allowed", http.StatusMethodNotAllowed)
+// 		return
+// 	}
+
+// 	// Попробуем прочитать тело запроса
+// 	defer r.Body.Close()
+// 	var weather Weather
+// 	err := json.NewDecoder(r.Body).Decode(&weather)
+// 	if err != nil {
+// 		http.Error(w, "Invalid JSON body: "+err.Error(), http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	// Пример обработки данных (можешь делать что угодно здесь)
+// 	log.Printf("Received Weather: %+v\n", weather)
+
+// 	// Вернем принятые данные обратно как JSON
+// 	w.Header().Set("Content-Type", "application/json")
+// 	jsonData, err := json.Marshal(weather)
+// 	if err != nil {
+// 		http.Error(w, "Error encoding response: "+err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	w.Write(jsonData)
+// }
+
 func testHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		weather := Weather{
-			Temp: 36.6,
-			Wind: Wind{
-				Speed: 5.0,
-				Gust:  10.0,
-			},
-			Sun: Sun{
-				Sunrise: 1626076800,
-				Sunset:  1626127200,
-			},
+	if r.Method == http.MethodGet {
+		var request Weather
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			fmt.Fprintln(w, "error unmarshal request: %w", err)
+			return
 		}
 
+		request.Temp += 10.0
+
 		w.Header().Set("Content-Type", "application/json")
-		jsonData, err := json.Marshal(weather)
+		jsonData, err := json.Marshal(request)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Fprintln(w, "error marshal data: %w", err)
 			return
 		}
 		w.Write(jsonData)
 	}
 
-	if r.Method == http.MethodGet {
+	if r.Method == http.MethodPost {
 		weather := Weather{
 			Temp: 12.0,
 			Wind: Wind{
@@ -62,12 +89,11 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		jsonData, err := json.Marshal(weather)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Fprintln(w, "error marshal data: %w", err)
 			return
 		}
 		w.Write(jsonData)
 	}
-
 }
 
 func main() {
