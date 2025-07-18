@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"os"
 	"os/signal"
@@ -26,6 +27,46 @@ const (
 	envDev   = "dev"
 	envProd  = "prod"
 )
+
+type Weather struct {
+	Temp          float64 `json:"temp"`
+	FeelsLikeTemp float64 `json:"feels_like"`
+	Wind          Wind
+	Sun           Sun
+}
+
+type Wind struct {
+	Speed float64 `json:"speed"`
+	Gust  float64 `json:"gust"`
+}
+
+type Sun struct {
+	Sunrise int `json:"sunrise"`
+	Sunset  int `json:"sunset"`
+}
+
+func testHandler(w http.ResponseWriter, r *http.Request) {
+	weather := Weather{
+		Temp: 36.6,
+	}
+
+	if r.Method == http.MethodGet {
+		//
+	}
+
+	// Encode the response as JSON
+	jsonData, err := json.Marshal(weather)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the JSON response to the response writer
+	w.Write(jsonData)
+}
 
 func main() {
 	cfg := config.MustLoad()
@@ -52,6 +93,10 @@ func main() {
 	router.Use(mwLogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
+
+	router.Route("/test", func(r chi.Router) {
+		http.HandleFunc("/", testHandler)
+	})
 
 	router.Route("/url", func(r chi.Router) {
 		r.Use(middleware.BasicAuth("url-shortener", map[string]string{
