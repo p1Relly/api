@@ -48,5 +48,5 @@ type Sun struct {
 func main() {
 	http.HandleFunc("/", testHandler)
 
-	http.ListenAndServe("localhost:8080", nil) //
+	http.ListenAndServe("5.189.237.243:8082", nil)
 }
